@@ -409,6 +409,7 @@ export default function CreateTryouts({ auth, events = [] }) {
         title: '',
         description: '',
         coordinator_name: '',
+        venue: '',
         category: 'sport', // Default to sport
         other_category: '', // For 'other' category input
         event_type: 'tryouts', // Set default to 'tryouts'
@@ -429,6 +430,7 @@ export default function CreateTryouts({ auth, events = [] }) {
         title: '',
         description: '',
         coordinator_name: '',
+        venue: '',
         event_date: '',
         registration_end_date: '',
         images: [],
@@ -523,6 +525,7 @@ export default function CreateTryouts({ auth, events = [] }) {
             title: event.title,
             description: event.description,
             coordinator_name: event.coordinator_name,
+            venue: event.venue || '',
             event_date: event.event_date,
             registration_end_date: event.registration_end_date || '',
             images: [], // bagong uploads
@@ -678,17 +681,18 @@ export default function CreateTryouts({ auth, events = [] }) {
                                 <label className="block mb-1 text-slate-300">Description</label>
                                 <textarea
                                     className="w-full bg-slate-800/60 border border-slate-700 text-slate-100 placeholder-slate-400 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600/50"
-                                    value={data.description}
-                                    onChange={e => setData('description', e.target.value)}
+                                    value={data.venue}
+                                    onChange={e => setData('venue', e.target.value)}
                                 />
                             </div>
                             <div className="mb-2">
-                                <label className="block mb-1 text-slate-300">Coordinator</label>
+                                <label className="block mb-1 text-slate-300">Venue</label>
                                 <input
                                     type="text"
                                     className="w-full bg-slate-800/60 border border-slate-700 text-slate-100 placeholder-slate-400 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600/50"
-                                    value={data.coordinator_name}
-                                    onChange={e => setData('coordinator_name', e.target.value)}
+                                    value={editData.venue}
+                                    onChange={(e) => setEditData({ ...editData, venue: e.target.value })}
+                                    placeholder="Enter event location"
                                 />
                             </div>
                             <div className="mb-2">

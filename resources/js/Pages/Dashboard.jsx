@@ -876,6 +876,7 @@ function Dashboard() {
             id: event.id,
             title: event.title || '',
             description: event.description || '',
+            venue: event.venue || '',
             event_type: event.event_type || '',
             category: derivedCategory || 'sport',
             other_category: derivedOtherCategory,
@@ -889,7 +890,8 @@ function Dashboard() {
             is_done: event.is_done ?? false,
             images: [],
             existingImages: buildExistingImages(event),
-            allow_bracketing: !!event.allow_bracketing,
+            // Ensure allow_bracketing is properly initialized as a boolean
+            allow_bracketing: Boolean(event.allow_bracketing),
             has_registration_end_date: !!event.registration_end_date,
             required_players: event.required_players ? String(event.required_players) : '',
             has_required_players: !!event.required_players,
@@ -980,10 +982,13 @@ function Dashboard() {
             formData.append('title', editData.title);
             formData.append('description', editData.description);
             formData.append('coordinator_name', editData.coordinator_name);
+            formData.append('venue', editData.venue || '');
             formData.append('event_type', editData.event_type);
             formData.append('category', editData.category);
             formData.append('other_category', editData.other_category || '');
+            // Ensure we're sending a proper boolean value
             formData.append('allow_bracketing', editData.allow_bracketing ? '1' : '0');
+            console.log('allow_bracketing value:', editData.allow_bracketing);
 
             if (editData.event_date) {
                 const sanitizedEventDate = editData.event_date.length === 16
@@ -1189,6 +1194,17 @@ function Dashboard() {
                                                 value={editData.coordinator_name}
                                                 onChange={e => setEditData({ ...editData, coordinator_name: e.target.value })}
                                                 className="w-full border border-slate-600 bg-slate-700 text-white px-2 py-1 rounded focus:border-blue-500 focus:outline-none"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm">Venue</label>
+                                            <input
+                                                type="text"
+                                                value={editData.venue || ''}
+                                                onChange={e => setEditData({ ...editData, venue: e.target.value })}
+                                                className="w-full border border-slate-600 bg-slate-700 text-white px-2 py-1 rounded focus:border-blue-500 focus:outline-none"
+                                                placeholder="Enter event location"
                                             />
                                         </div>
 

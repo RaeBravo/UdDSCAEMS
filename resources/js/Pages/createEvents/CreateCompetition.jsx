@@ -509,6 +509,7 @@ export default function CreateCompetition({ auth, events = [] }) {
         title: '',
         description: '',
         coordinator_name: '',
+        venue: '',
         participants: [''],
         category: 'sport', // Default to sport
         other_category: '', // For 'other' category input
@@ -531,6 +532,7 @@ export default function CreateCompetition({ auth, events = [] }) {
         title: '',
         description: '',
         coordinator_name: '',
+        venue: '',
         participants: [''],
         event_date: '',
         event_end_date: '',
@@ -623,6 +625,7 @@ export default function CreateCompetition({ auth, events = [] }) {
             title: event.title,
             description: event.description,
             coordinator_name: event.coordinator_name,
+            venue: event.venue || '',
             participants: Array.isArray(event.participants) && event.participants.length > 0
                 ? event.participants
                 : [''],
@@ -799,6 +802,16 @@ export default function CreateCompetition({ auth, events = [] }) {
                                     className="w-full bg-slate-800/60 border border-slate-700 text-slate-100 placeholder-slate-400 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600/50"
                                     value={data.coordinator_name}
                                     onChange={e => setData('coordinator_name', e.target.value)}
+                                />
+                            </div>
+                            <div className="mb-2">
+                                <label className="block mb-1 text-slate-300">Venue</label>
+                                <input
+                                    type="text"
+                                    className="w-full bg-slate-800/60 border border-slate-700 text-slate-100 placeholder-slate-400 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600/50"
+                                    value={data.venue}
+                                    onChange={e => setData('venue', e.target.value)}
+                                    placeholder="Enter event location"
                                 />
                             </div>
                             <div className="mb-4">

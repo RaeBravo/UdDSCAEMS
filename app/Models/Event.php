@@ -40,6 +40,7 @@ class Event extends Model
         'title',
         'description',
         'coordinator_name',
+        'venue',
         'participants',
         'category',
         'other_category',
@@ -47,11 +48,11 @@ class Event extends Model
         'other_event_type',
         'event_date',
         'event_end_date',
+        'allow_bracketing',
         'registration_end_date',
         'has_registration_end_date',
         'required_players',
         'is_done',
-        'allow_bracketing',
     ];
 
     protected $casts = [

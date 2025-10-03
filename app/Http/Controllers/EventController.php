@@ -40,6 +40,7 @@ class EventController extends Controller
             'title',
             'description',
             'coordinator_name',
+            'venue',
             'participants',
             'event_type',
             'category',
@@ -119,7 +120,15 @@ class EventController extends Controller
     {
         // Ensure up-to-date done status when viewing an event
         $this->updateCompletedEvents();
-        $event->load('images');
+        
+        // Reload the event with only the fields we need and include relationships
+        $event = Event::select([
+            'id', 'title', 'description', 'coordinator_name', 'venue', 
+            'participants', 'event_type', 'category', 'other_category',
+            'event_date', 'event_end_date', 'registration_end_date',
+            'has_registration_end_date', 'required_players', 'is_done',
+            'bracket_type', 'allow_bracketing', 'teams'
+        ])->with(['images', 'bracket'])->findOrFail($event->id);
         $base = rtrim(request()->getSchemeAndHttpHost(), '/');
         $event->images_path = $event->images->map(function ($img) use ($base) {
             return $base . '/storage/' . ltrim($img->image_path, '/');
@@ -138,6 +147,7 @@ class EventController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'coordinator_name' => 'required|string|max:255',
+            'venue' => 'nullable|string|max:255',
             'participants' => 'nullable|array',
             'participants.*' => 'nullable|string|max:255',
             'category' => 'required|string|in:sport,culture,arts,intramurals,other',
@@ -181,6 +191,7 @@ class EventController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
             'coordinator_name' => $validated['coordinator_name'],
+            'venue' => $validated['venue'] ?? null,
             'participants' => $participants,
             'category' => $category,
             'other_category' => $validated['other_category'] ?? null,
@@ -227,6 +238,7 @@ class EventController extends Controller
                 'title' => 'required|string|max:255',
                 'description' => 'required|string',
                 'coordinator_name' => 'required|string|max:255',
+                'venue' => 'nullable|string|max:255',
                 'participants' => 'nullable|array',
                 'participants.*' => 'nullable|string|max:255',
                 'category' => 'required|string|in:sport,culture,arts,intramurals,other',
@@ -279,6 +291,7 @@ class EventController extends Controller
                 'title' => $data['title'],
                 'description' => $data['description'],
                 'coordinator_name' => $data['coordinator_name'],
+                'venue' => $data['venue'] ?? null,
                 'participants' => $participants,
                 'category' => $category,
                 'other_category' => $data['other_category'] ?? null,
